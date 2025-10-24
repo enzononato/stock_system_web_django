@@ -25,6 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
+NAME_DATABASE = os.getenv('NAME_DATABASE')
+USER_DATABASE = os.getenv('USER_DATABASE')
+PASSWORD_DATABASE = os.getenv('PASSWORD_DATABASE')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'inventory',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -78,8 +83,12 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': NAME_DATABASE,  # O nome do banco que você criou no MySQL
+        'USER': USER_DATABASE,        # Ex: 'root'
+        'PASSWORD': PASSWORD_DATABASE,      # Ex: 'admin'
+        'HOST': 'localhost',           # Ou o IP do seu servidor MySQL
+        'PORT': '3306',
     }
 }
 
@@ -124,3 +133,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#Rotas
+LOGIN_URL = 'login'
