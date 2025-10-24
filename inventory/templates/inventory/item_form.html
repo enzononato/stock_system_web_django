@@ -1,0 +1,302 @@
+{% extends 'inventory/base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+    {% if form.instance.pk %}
+        <h2>Editar Item: {{ form.instance.brand }} {{ form.instance.model }}</h2>
+    {% else %}
+        <h2>Cadastrar Novo Item</h2>
+    {% endif %}
+
+    <style>
+        /* --- ESTILOS GERAIS --- */
+        .hidden-by-default {
+            display: none; /* Esconde por padrão */
+        }
+        form {
+            max-width: 900px; /* Aumenta um pouco a largura máxima */
+            margin: auto;
+            background-color: #fff; /* Fundo branco para o formulário */
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Sombra suave */
+        }
+
+        /* --- ESTILOS DOS CAMPOS --- */
+        .form-field {
+            margin-bottom: 1.2rem;
+        }
+        .form-field label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #555; /* Cor do label um pouco mais suave */
+        }
+        .form-field input,
+        .form-field select {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.2s ease-in-out; /* Transição suave */
+        }
+        .form-field input:focus,
+        .form-field select:focus {
+            border-color: #0078D4; /* Destaque azul ao focar */
+            outline: none; /* Remove o outline padrão */
+        }
+
+        /* --- ESTILOS DE VALIDAÇÃO --- */
+        .required-asterisk { color: #D32F2F; font-weight: bold; margin-left: 3px; }
+        .error-field { border-color: #D32F2F !important; }
+        .error-message { color: #D32F2F; font-size: 0.85em; list-style-type: none; padding-left: 0; margin-top: 5px; }
+
+        /* --- LAYOUT EM GRID PARA ORGANIZAÇÃO --- */
+        .form-grid {
+            display: grid;
+            gap: 1rem 1.5rem; /* Espaçamento entre linhas e colunas */
+        }
+
+        /* Define 2 colunas em telas maiores */
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 colunas iguais */
+            }
+            /* Campo pode ocupar largura total */
+            .grid-col-span-2 {
+                grid-column: span 2;
+            }
+        }
+        /* Em telas menores, volta para 1 coluna */
+        @media (max-width: 767px) {
+            .form-grid {
+                grid-template-columns: 1fr; /* 1 coluna */
+            }
+        }
+
+
+        /* Botão */
+        button[type="submit"] {
+            background: #0078D4; color: white; padding: 12px 25px; border: none;
+            border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.2s ease;
+        }
+        button[type="submit"]:hover { background: #005a9e; }
+
+    </style>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-field grid-col-span-2">
+            {{ form.tipo.label_tag }}
+            {% if form.tipo.field.required %}<span class="required-asterisk">*</span>{% endif %}
+            {% if form.tipo.errors %}{% render_field form.tipo class+="error-field" %}{% else %}{% render_field form.tipo %}{% endif %}
+            {% if form.tipo.errors %}<ul class="error-message">{{ form.tipo.errors }}</ul>{% endif %}
+        </div>
+
+        <div id="all-other-fields" class="hidden-by-default form-grid"> {/* Aplica o grid aqui */}
+
+            <div class="form-field">
+                {{ form.brand.label_tag }}
+                {% if form.brand.field.required %}<span class="required-asterisk">*</span>{% endif %}
+                {% if form.brand.errors %}{% render_field form.brand class+="error-field" %}{% else %}{% render_field form.brand %}{% endif %}
+                {% if form.brand.errors %}<ul class="error-message">{{ form.brand.errors }}</ul>{% endif %}
+            </div>
+            <div class="form-field">
+                {{ form.model.label_tag }}
+                {% if form.model.field.required %}<span class="required-asterisk">*</span>{% endif %}
+                {% if form.model.errors %}{% render_field form.model class+="error-field" %}{% else %}{% render_field form.model %}{% endif %}
+                {% if form.model.errors %}<ul class="error-message">{{ form.model.errors }}</ul>{% endif %}
+            </div>
+            <div class="form-field">
+                {{ form.revenda.label_tag }}
+                {% if form.revenda.field.required %}<span class="required-asterisk">*</span>{% endif %}
+                {% if form.revenda.errors %}{% render_field form.revenda class+="error-field" %}{% else %}{% render_field form.revenda %}{% endif %}
+                {% if form.revenda.errors %}<ul class="error-message">{{ form.revenda.errors }}</ul>{% endif %}
+            </div>
+            <div class="form-field">
+                {{ form.nota_fiscal.label_tag }}
+                {% if form.nota_fiscal.field.required %}<span class="required-asterisk">*</span>{% endif %}
+                {% if form.nota_fiscal.errors %}{% render_field form.nota_fiscal class+="error-field" %}{% else %}{% render_field form.nota_fiscal %}{% endif %}
+                {% if form.nota_fiscal.errors %}<ul class="error-message">{{ form.nota_fiscal.errors }}</ul>{% endif %}
+            </div>
+            <div class="form-field">
+                {{ form.fornecedor.label_tag }}
+                {% if form.fornecedor.field.required %}<span class="required-asterisk">*</span>{% endif %}
+                {% if form.fornecedor.errors %}{% render_field form.fornecedor class+="error-field" %}{% else %}{% render_field form.fornecedor %}{% endif %}
+                {% if form.fornecedor.errors %}<ul class="error-message">{{ form.fornecedor.errors }}</ul>{% endif %}
+            </div>
+            <div class="form-field">
+                {{ form.date_registered.label_tag }}
+                {% if form.date_registered.field.required %}<span class="required-asterisk">*</span>{% endif %}
+                {% if form.date_registered.errors %}{% render_field form.date_registered class+="error-field" %}{% else %}{% render_field form.date_registered %}{% endif %}
+                {% if form.date_registered.errors %}<ul class="error-message">{{ form.date_registered.errors }}</ul>{% endif %}
+            </div>
+
+            <div id="campos-Celular" class="dynamic-fields form-field hidden-by-default">
+                {{ form.identificador.label_tag }}
+                {% if form.fields.identificador.required %}<span class="required-asterisk">*</span>{% endif %}
+                {% if form.identificador.errors %}{% render_field form.identificador class+="error-field" %}{% else %}{% render_field form.identificador %}{% endif %}
+                {% if form.identificador.errors %}<ul class="error-message">{{ form.identificador.errors }}</ul>{% endif %}
+            </div>
+             <div id="campos-Tablet" class="dynamic-fields form-field hidden-by-default">
+                {{ form.storage.label_tag }}
+                {% if form.fields.storage.required %}<span class="required-asterisk">*</span>{% endif %}
+                {% if form.storage.errors %}{% render_field form.storage class+="error-field" %}{% else %}{% render_field form.storage %}{% endif %}
+                {% if form.storage.errors %}<ul class="error-message">{{ form.storage.errors }}</ul>{% endif %}
+            </div>
+
+            <div id="campos-Notebook" class="dynamic-fields form-grid grid-col-span-2 hidden-by-default">
+                 {% for field in form %}
+                    {% if field.name in "dominio host endereco_fisico storage sistema cpu ram licenca anydesk" %}
+                    <div class="form-field {% if field.name == 'endereco_fisico' %}grid-col-span-2{% endif %}"> {/* Exemplo: Endereço ocupa 2 colunas */}
+                        {{ field.label_tag }}
+                        {% if field.field.required %}<span class="required-asterisk">*</span>{% endif %}
+                        {% if field.errors %}{% render_field field class+="error-field" %}{% else %}{% render_field field %}{% endif %}
+                        {% if field.errors %}<ul class="error-message">{{ field.errors }}</ul>{% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div id="campos-Desktop" class="dynamic-fields hidden-by-default"></div> {/* Apenas para o JS encontrar */}
+
+            <div id="campos-Impressora" class="dynamic-fields form-grid grid-col-span-2 hidden-by-default">
+                 {% for field in form %}
+                    {% if field.name in "setor ip mac" %}
+                    <div class="form-field">
+                        {{ field.label_tag }}
+                        {% if field.field.required %}<span class="required-asterisk">*</span>{% endif %}
+                        {% if field.errors %}{% render_field field class+="error-field" %}{% else %}{% render_field field %}{% endif %}
+                        {% if field.errors %}<ul class="error-message">{{ field.errors }}</ul>{% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div id="campos-Switch" class="dynamic-fields form-grid grid-col-span-2 hidden-by-default">
+                 {% for field in form %}
+                    {% if field.name in "poe quantidade_portas" %}
+                    <div class="form-field">
+                        {{ field.label_tag }}
+                        {% if field.field.required %}<span class="required-asterisk">*</span>{% endif %}
+                        {% if field.errors %}{% render_field field class+="error-field" %}{% else %}{% render_field field %}{% endif %}
+                        {% if field.errors %}<ul class="error-message">{{ field.errors }}</ul>{% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div id="campos-HD" class="dynamic-fields form-field hidden-by-default">
+                {{ form.storage.label_tag }}
+                {% if form.fields.storage.required %}<span class="required-asterisk">*</span>{% endif %}
+                {% if form.storage.errors %}{% render_field form.storage class+="error-field" %}{% else %}{% render_field form.storage %}{% endif %}
+                {% if form.storage.errors %}<ul class="error-message">{{ form.storage.errors }}</ul>{% endif %}
+            </div>
+
+             <div id="campos-Nobreak" class="dynamic-fields form-grid grid-col-span-2 hidden-by-default">
+                {% for field in form %}
+                    {% if field.name in "identificador codigo_patrimonial responsavel potencia_nominal autonomia_estimada ip_snmp" %}
+                    <div class="form-field">
+                        {{ field.label_tag }}
+                        {% if field.field.required %}<span class="required-asterisk">*</span>{% endif %}
+                        {% if field.errors %}{% render_field field class+="error-field" %}{% else %}{% render_field field %}{% endif %}
+                        {% if field.errors %}<ul class="error-message">{{ field.errors }}</ul>{% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div id="campos-Access Point" class="dynamic-fields form-grid grid-col-span-2 hidden-by-default">
+                 {% for field in form %}
+                    {% if field.name in "identificador codigo_patrimonial local_instalacao setor ip mac" %}
+                    <div class="form-field">
+                        {{ field.label_tag }}
+                        {% if field.field.required %}<span class="required-asterisk">*</span>{% endif %}
+                        {% if field.errors %}{% render_field field class+="error-field" %}{% else %}{% render_field field %}{% endif %}
+                        {% if field.errors %}<ul class="error-message">{{ field.errors }}</ul>{% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+        </div> <div class="form-field grid-col-span-2"> {/* Garante que o botão fique abaixo */}
+            <button type="submit" id="submit-button" class="hidden-by-default">
+                {% if form.instance.pk %}Salvar Alterações{% else %}Cadastrar Item{% endif %}
+            </button>
+        </div>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tipoSelect = document.getElementById('id_tipo');
+            const allOtherFields = document.getElementById('all-other-fields');
+            const submitButton = document.getElementById('submit-button');
+            // Seleciona os divs dinâmicos dentro de #all-other-fields
+            const dynamicFieldGroups = allOtherFields.querySelectorAll('.dynamic-fields');
+
+            function toggleFields() {
+                let selectedValue = tipoSelect.value;
+
+                // Esconde a div principal e o botão
+                allOtherFields.style.display = 'none';
+                submitButton.style.display = 'none';
+
+                // Esconde todos os grupos dinâmicos individuais
+                dynamicFieldGroups.forEach(function(fieldGroup) {
+                    fieldGroup.style.display = 'none';
+                });
+
+                if (selectedValue) {
+                    // Mostra a div principal (que agora é um grid)
+                    allOtherFields.style.display = 'grid'; // Usa grid aqui
+                    submitButton.style.display = 'inline-block'; // Ou 'block'
+
+                    // Mostra o(s) grupo(s) dinâmico(s) específico(s)
+                    // (Agora eles são filhos do grid e se ajustarão)
+                    let targetIds = [];
+                    if (selectedValue === 'Celular') targetIds.push('campos-Celular');
+                    if (selectedValue === 'Tablet') targetIds.push('campos-Tablet'); // Mostra identificador e storage
+                    if (selectedValue === 'Notebook') targetIds.push('campos-Notebook');
+                    if (selectedValue === 'Desktop') targetIds.push('campos-Notebook'); // Desktop usa os campos do Notebook
+                    if (selectedValue === 'Impressora') targetIds.push('campos-Impressora');
+                    if (selectedValue === 'Switch') targetIds.push('campos-Switch');
+                    if (selectedValue === 'HD') targetIds.push('campos-HD');
+                    if (selectedValue === 'Nobreak') targetIds.push('campos-Nobreak');
+                    if (selectedValue === 'Access Point') targetIds.push('campos-Access Point');
+
+                    targetIds.forEach(id => {
+                        let targetDiv = document.getElementById(id);
+                        if (targetDiv) {
+                            // Importante: Eles são filhos do grid, então 'block' ou 'grid' não faz diferença visual aqui
+                            // Mas é mais semanticamente correto usar 'block' para um campo único
+                            // e 'grid' para um grupo que tem seu próprio grid interno.
+                            targetDiv.style.display = targetDiv.classList.contains('form-grid') ? 'grid' : 'block';
+                        }
+                    });
+                     // Lógica especial para Tablet e HD que compartilham o campo Storage
+                    if (selectedValue === 'Tablet' || selectedValue === 'HD') {
+                        let storageFieldForHD = document.getElementById('campos-HD');
+                        if (storageFieldForHD) storageFieldForHD.style.display = 'block';
+                    }
+                     // Lógica especial para Celular, Tablet, Nobreak, Access Point (compartilham Identificador)
+                    if (['Celular', 'Tablet', 'Nobreak', 'Access Point'].includes(selectedValue)) {
+                         let idFieldForCel = document.getElementById('campos-Celular');
+                         if (idFieldForCel) idFieldForCel.style.display = 'block';
+                    }
+
+
+                }
+            }
+
+            tipoSelect.addEventListener('change', toggleFields);
+            toggleFields();
+        });
+    </script>
+
+{% endblock %}

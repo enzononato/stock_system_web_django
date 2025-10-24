@@ -1,0 +1,36 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+    <h2>Estoque de Equipamentos</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Status</th>
+                <th>Usuário</th>
+                <th>Data Cadastro</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.tipo }}</td>
+                <td>{{ item.brand }}</td>
+                <td>{{ item.model }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.assigned_to|default_if_none:"-" }}</td>
+                <td>{{ item.date_registered|date:"d/m/Y" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">Nenhum item encontrado no estoque.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

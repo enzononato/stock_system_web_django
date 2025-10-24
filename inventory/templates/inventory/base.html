@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Estoque</title>
+    <style>
+        body { font-family: "Segoe UI", sans-serif; margin: 0; background: #F5F5F5; }
+        header { background: #0078D4; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { margin: 0; }
+        header a { color: white; text-decoration: none; font-weight: bold; }
+        nav { background: #FFFFFF; padding: 10px 30px; border-bottom: 1px solid #ddd; }
+        nav a { text-decoration: none; padding: 8px 15px; color: #0078D4; font-weight: bold; }
+        nav a:hover { background: #f0f0f0; }
+        .container { background: #FFFFFF; margin: 20px; padding: 20px; border-radius: 5px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #0078D4; color: white; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestão de Estoque</h1>
+        <a href="{% url 'logout' %}">Sair</a>
+    </header>
+    
+    <nav>
+        <a href="{% url 'item_list' %}">Estoque</a>
+        <a href="{% url 'item_add' %}">Cadastrar Item</a>
+    </nav>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>
